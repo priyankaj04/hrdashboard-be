@@ -21,6 +21,21 @@ class BaseModel {
     return data;
   }
 
+  async findByUserId(id) {
+    const { data, error } = await this.supabase
+      .from(this.tableName)
+      .select('*')
+      .eq('user_id', id)
+      .single();
+
+    if (error && error.code !== 'PGRST116') {
+      throw new Error(`Error fetching ${this.tableName}: ${error.message}`);
+    }
+
+    return data;
+
+  }
+
   // Get all records with optional filters
   async findAll(filters = {}, columns = '*') {
     let query = this.supabase.from(this.tableName).select(columns);

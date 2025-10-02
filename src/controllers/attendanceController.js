@@ -228,13 +228,13 @@ const checkIn = asyncHandler(async (req, res) => {
   }
 
   // Check if employee exists
-  const employee = await EmployeeModel.findById(targetEmployeeId);
+  const employee = await EmployeeModel.findByUserId(targetEmployeeId);
   if (!employee) {
     throw new ApiError(404, 'Employee not found');
   }
 
   const record = await AttendanceModel.checkIn(
-    targetEmployeeId, 
+    employee?.id, 
     targetDate, 
     checkInTime, 
     location, 
@@ -252,7 +252,7 @@ const checkIn = asyncHandler(async (req, res) => {
     message: 'Check-in successful',
     data: {
       id: record.id,
-      employee_id: targetEmployeeId,
+      employee_id: employee?.id,
       date: targetDate,
       check_in: checkInTime,
       status: record.status,
@@ -266,13 +266,18 @@ const checkIn = asyncHandler(async (req, res) => {
 // @access  Private
 const checkOut = asyncHandler(async (req, res) => {
   const { employee_id, date, check_out, notes } = req.body;
+
+  const employee = await EmployeeModel.findByUserId(employee_id || (req.employee ? req.employee.id : null));
+  if (!employee) {
+    throw new ApiError(404, 'Employee not found');
+  }
   
   // Use provided date or current date
   const targetDate = date || moment().format('YYYY-MM-DD');
   const checkOutTime = check_out || moment().format('HH:mm:ss');
   
   // Use current user's employee ID if not provided and user is not admin/HR
-  const targetEmployeeId = employee_id || (req.employee ? req.employee.id : null);
+  const targetEmployeeId = employee?.id || (req.employee ? req.employee.id : null);
   
   if (!targetEmployeeId) {
     throw new ApiError(400, 'Employee ID is required');

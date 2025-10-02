@@ -238,7 +238,7 @@ class LeaveModel extends BaseModel {
             .from(this.tableName)
             .select('id, start_date, end_date, status')
             .eq('employee_id', employeeId)
-            .or(`start_date.lte.${endDate},end_date.gte.${startDate}`)
+            .or(`and(start_date.lte.${endDate},end_date.gte.${startDate})`)
             .in('status', ['pending', 'approved']);
 
         if (excludeId) {
@@ -251,7 +251,7 @@ class LeaveModel extends BaseModel {
             throw new Error(`Error checking leave overlap: ${error.message}`);
         }
 
-        return data || [];
+        return data && data.length > 0 ? data : [];
     }
 
     // Enhanced findAll with pagination and detailed formatting
