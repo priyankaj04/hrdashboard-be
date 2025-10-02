@@ -13,8 +13,6 @@ const getLeaveRequests = asyncHandler(async (req, res) => {
     type, 
     start_date, 
     end_date, 
-    page = 1, 
-    limit = 10 
   } = req.query;
 
   // Non-admin users can only see their own leaves
@@ -35,17 +33,6 @@ const getLeaveRequests = asyncHandler(async (req, res) => {
     throw new ApiError(400, 'Invalid end_date format. Use YYYY-MM-DD');
   }
 
-  // Validate pagination
-  const pageNum = parseInt(page);
-  const limitNum = parseInt(limit);
-
-  if (pageNum < 1) {
-    throw new ApiError(400, 'Page must be greater than 0');
-  }
-
-  if (limitNum < 1 || limitNum > 100) {
-    throw new ApiError(400, 'Limit must be between 1 and 100');
-  }
 
   const filters = {
     employee_id: targetEmployeeId,
@@ -55,7 +42,7 @@ const getLeaveRequests = asyncHandler(async (req, res) => {
     end_date
   };
 
-  const result = await LeaveModel.findAllPaginated(filters, { page: pageNum, limit: limitNum });
+  const result = await LeaveModel.findAllPaginated(filters);
 
   res.status(200).json({
     success: true,

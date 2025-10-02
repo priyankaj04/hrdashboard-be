@@ -264,8 +264,6 @@ class LeaveModel extends BaseModel {
       end_date, 
       department_id 
     } = filters;
-    const { page, limit } = pagination;
-    const offset = (page - 1) * limit;
 
     let query = this.supabase
       .from(this.tableName)
@@ -334,7 +332,6 @@ class LeaveModel extends BaseModel {
     }
 
     const { data, error, count } = await query
-      .range(offset, offset + limit - 1)
       .order('applied_date', { ascending: false });
 
     if (error) {
@@ -375,10 +372,7 @@ class LeaveModel extends BaseModel {
     return {
       leaves: formattedData,
       pagination: {
-        current_page: page,
-        total_pages: Math.ceil(count / limit),
         total_records: count,
-        per_page: limit
       }
     };
   }
@@ -765,7 +759,8 @@ class LeaveModel extends BaseModel {
       name: type.name,
       max_days: type.max_days || 25,
       requires_medical_certificate: type.requires_medical_certificate || false,
-      advance_notice_days: type.advance_notice_days || 0
+      advance_notice_days: type.advance_notice_days || 0,
+      color: type.color || '#000000',
     }));
   }
 
