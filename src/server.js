@@ -14,6 +14,7 @@ const employeeRoutes = require('./routes/employeeRoutes');
 const departmentRoutes = require('./routes/departmentRoutes');
 const positionRoutes = require('./routes/positionRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
+const leaveRoutes = require('./routes/leaveRoutes');
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use('/api/employees', employeeRoutes);
 app.use('/api/departments', departmentRoutes);
 app.use('/api/positions', positionRoutes);
 app.use('/api/attendance', attendanceRoutes);
+app.use('/api/leaves', leaveRoutes);
 
 // API documentation route
 app.get('/api', (req, res) => {
@@ -69,7 +71,8 @@ app.get('/api', (req, res) => {
       employees: '/api/employees/*',
       departments: '/api/departments/*',
       positions: '/api/positions/*',
-      attendance: '/api/attendance/*'
+      attendance: '/api/attendance/*',
+      leaves: '/api/leaves/*'
     },
     endpoints: {
       health: '/health',
@@ -116,6 +119,18 @@ app.get('/api', (req, res) => {
         checkIn: 'POST /api/attendance/checkin',
         checkOut: 'POST /api/attendance/checkout',
         summary: 'GET /api/attendance/summary/:employeeId'
+      },
+      leaves: {
+        getAll: 'GET /api/leaves',
+        create: 'POST /api/leaves',
+        update: 'PUT /api/leaves/:id',
+        cancel: 'DELETE /api/leaves/:id',
+        updateStatus: 'PUT /api/leaves/:id/status',
+        statistics: 'GET /api/leaves/statistics',
+        balance: 'GET /api/leaves/balance/:employee_id',
+        calendar: 'GET /api/leaves/calendar',
+        types: 'GET /api/leaves/types',
+        bulkAction: 'POST /api/leaves/bulk-action'
       }
     }
   });

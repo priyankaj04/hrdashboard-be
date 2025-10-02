@@ -16,6 +16,7 @@ const login = asyncHandler(async (req, res) => {
 
   // Find user by email
   const user = await UserModel.findByEmail(email);
+  console.log("user", user)
   if (!user) {
     throw new ApiError(401, 'Invalid credentials');
   }
