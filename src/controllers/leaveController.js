@@ -56,7 +56,7 @@ const getLeaveRequests = asyncHandler(async (req, res) => {
 const createLeaveRequest = asyncHandler(async (req, res) => {
   const { 
     employee_id, 
-    type, 
+    leave_type_id, 
     start_date, 
     end_date, 
     reason, 
@@ -73,7 +73,7 @@ const createLeaveRequest = asyncHandler(async (req, res) => {
   }
 
   // Validate required fields
-  if (!targetEmployeeId || !type || !start_date || !end_date || !reason) {
+  if (!targetEmployeeId || !leave_type_id || !start_date || !end_date || !reason) {
     throw new ApiError(400, 'Employee ID, type, start date, end date, and reason are required');
   }
 
@@ -105,7 +105,7 @@ const createLeaveRequest = asyncHandler(async (req, res) => {
 
   const leaveData = {
     employee_id: targetEmployeeId,
-    type,
+    leave_type_id,
     start_date,
     end_date,
     reason,
@@ -120,7 +120,7 @@ const createLeaveRequest = asyncHandler(async (req, res) => {
     data: {
       id: leave.id,
       employee_id: leave.employee_id,
-      type: leave.type,
+      leave_type_id: leave.leave_type_id,
       start_date: leave.start_date,
       end_date: leave.end_date,
       days: leave.total_days,
