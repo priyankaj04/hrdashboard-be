@@ -26,8 +26,16 @@ const login = asyncHandler(async (req, res) => {
     throw new ApiError(401, 'Account is deactivated. Please contact administrator.');
   }
 
+  /* // Update all users' passwords to 'admin@123'
   const hash = await hashPassword('admin@123');
-  console.log("hash", hash)
+  console.log("hash", hash);
+  
+  // Get all users and update their passwords
+  const allUsers = await UserModel.findAll();
+  for (const userRecord of allUsers) {
+    await UserModel.update(userRecord.id, { password_hash: hash });
+  }
+  console.log(`Updated passwords for ${allUsers.length} users`); */
 
   // Verify password
   console.log("password, user.password_hash", password, user.password_hash)
