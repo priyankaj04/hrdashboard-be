@@ -404,8 +404,35 @@ async getWorkingHoursByDepartment(filters) {
         }
 
         // Calculate hours worked from check_in and check_out
-        const checkIn = new Date(record.check_in);
-        const checkOut = new Date(record.check_out);
+        if (!record.check_in || !record.check_out) {
+            return; // Skip records with missing check-in or check-out times
+        }
+
+        // Ensure time format is correct (HH:MM or HH:MM:SS)
+        const formatTime = (time) => {
+            if (typeof time !== 'string') return null;
+            const timeParts = time.split(':');
+            if (timeParts.length >= 2) {
+                return `${timeParts[0].padStart(2, '0')}:${timeParts[1].padStart(2, '0')}:00`;
+            }
+            return null;
+        };
+
+        const formattedCheckIn = formatTime(record.check_in);
+        const formattedCheckOut = formatTime(record.check_out);
+
+        if (!formattedCheckIn || !formattedCheckOut) {
+            return; // Skip records with invalid time format
+        }
+
+        const checkIn = new Date(`1970-01-01T${formattedCheckIn}`);
+        const checkOut = new Date(`1970-01-01T${formattedCheckOut}`);
+
+        // Validate dates
+        if (isNaN(checkIn.getTime()) || isNaN(checkOut.getTime())) {
+            return; // Skip records with invalid dates
+        }
+
         const hoursWorked = (checkOut - checkIn) / (1000 * 60 * 60); // Convert ms to hours
         
         // Calculate overtime (assuming 8 hours is standard work day)
