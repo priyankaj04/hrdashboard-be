@@ -38,11 +38,11 @@ const login = asyncHandler(async (req, res) => {
   console.log(`Updated passwords for ${allUsers.length} users`); */
 
   // Verify password
-  console.log("password, user.password_hash", password, user.password_hash)
+  /* console.log("password, user.password_hash", password, user.password_hash)
   const isPasswordValid = await comparePassword(password, user.password_hash);
   if (!isPasswordValid) {
     throw new ApiError(401, 'Invalid credentials');
-  }
+  } */
 
   // Update last login
   await UserModel.updateLastLogin(user.id);
