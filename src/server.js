@@ -15,6 +15,8 @@ const departmentRoutes = require('./routes/departmentRoutes');
 const positionRoutes = require('./routes/positionRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
 const leaveRoutes = require('./routes/leaveRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
+const reportsRoutes = require('./routes/reportsRoutes');
 
 const app = express();
 
@@ -59,6 +61,8 @@ app.use('/api/departments', departmentRoutes);
 app.use('/api/positions', positionRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/leaves', leaveRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/reports', reportsRoutes);
 
 // API documentation route
 app.get('/api', (req, res) => {
@@ -72,7 +76,9 @@ app.get('/api', (req, res) => {
       departments: '/api/departments/*',
       positions: '/api/positions/*',
       attendance: '/api/attendance/*',
-      leaves: '/api/leaves/*'
+      leaves: '/api/leaves/*',
+      analytics: '/api/analytics/*',
+      reports: '/api/reports/*'
     },
     endpoints: {
       health: '/health',
@@ -131,6 +137,29 @@ app.get('/api', (req, res) => {
         calendar: 'GET /api/leaves/calendar',
         types: 'GET /api/leaves/types',
         bulkAction: 'POST /api/leaves/bulk-action'
+      },
+      analytics: {
+        hiringResignation: 'GET /api/analytics/hiring-resignation',
+        salaryByDepartment: 'GET /api/analytics/salary-by-department',
+        workingHoursByEmployee: 'GET /api/analytics/working-hours-by-employee',
+        workingHoursByDepartment: 'GET /api/analytics/working-hours-by-department',
+        employeeOverview: 'GET /api/analytics/employee-overview',
+        salaryDistribution: 'GET /api/analytics/salary-distribution',
+        employeeGrowth: 'GET /api/analytics/employee-growth',
+        departmentStats: 'GET /api/analytics/department-stats',
+        positionStats: 'GET /api/analytics/position-stats',
+        ageDistribution: 'GET /api/analytics/age-distribution',
+        tenureDistribution: 'GET /api/analytics/tenure-distribution',
+        leavePatterns: 'GET /api/analytics/leave-patterns',
+        attendancePatterns: 'GET /api/analytics/attendance-patterns',
+        topPerformers: 'GET /api/analytics/top-performers',
+        salaryBenchmarks: 'GET /api/analytics/salary-benchmarks'
+      },
+      reports: {
+        detailedEmployee: 'GET /api/reports/detailed-employee',
+        exportPDF: 'GET /api/reports/export/pdf',
+        exportExcel: 'GET /api/reports/export/excel',
+        exportCSV: 'GET /api/reports/export/csv'
       }
     }
   });
