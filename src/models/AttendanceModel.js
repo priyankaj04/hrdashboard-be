@@ -686,7 +686,7 @@ class AttendanceModel extends BaseModel {
     // Get attendance data for all employees in the result
     const employeeIds = employees.map(emp => emp.id);
     
-    const { data: attendanceRecords, error: attendanceError } = await supabase
+    const { data: attendanceRecords, error: attendanceError } = await this.supabase
       .from('attendance')
       .select('employee_id, date, status, total_hours')
       .in('employee_id', employeeIds)
