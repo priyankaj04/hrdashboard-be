@@ -650,7 +650,7 @@ class AttendanceModel extends BaseModel {
     const end = endDate || moment().endOf('month').format('YYYY-MM-DD');
 
     // Build employee query
-    let employeeQuery = supabase
+    let employeeQuery = this.supabase
       .from('employees')
       .select(`
         id,
