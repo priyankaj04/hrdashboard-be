@@ -656,7 +656,7 @@ class AttendanceModel extends BaseModel {
         id,
         first_name,
         last_name,
-        email,
+        personal_email,
         employee_id,
         status,
         hire_date,
