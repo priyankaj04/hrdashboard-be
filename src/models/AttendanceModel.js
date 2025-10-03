@@ -687,7 +687,7 @@ class AttendanceModel extends BaseModel {
     const employeeIds = employees.map(emp => emp.id);
     
     const { data: attendanceRecords, error: attendanceError } = await this.supabase
-      .from('attendance')
+      .from('attendance_records')
       .select('employee_id, date, status, total_hours')
       .in('employee_id', employeeIds)
       .gte('date', start)
